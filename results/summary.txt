@@ -1,0 +1,47 @@
+Droplet-formation solver results
+============================================================
+Channel diameter dc = 300.0 μm
+Channel radius   R  = 150.0 μm
+μ1 (continuous)     = 2.240 mPa·s
+μ2 (dispersed)      = 0.970 mPa·s
+μ1/μ2               = 2.309
+
+1. Reference case  Q1=10 ml/h, Q2=1 ml/h, dd=0.6 dc
+   ∂p1/∂x = -2.0761e+05 Pa/m
+   ∂p2/∂x = 6.6583e+04 Pa/m
+   U_tp   = 0.080416 m/s
+   u2(0)  = -0.058584 m/s
+   Q1 recovered rel. error = -8.040e-15
+   Q2 recovered rel. error = -3.666e-14
+   Chebyshev max |u1| error = 3.105e-14
+   Chebyshev max |u2| error = 4.154e-14
+   Chebyshev P1 = -2.0761e+05  (analytical -2.0761e+05)
+   Chebyshev P2 = 6.6583e+04  (analytical 6.6583e+04)
+
+2. Velocity as the droplet grows (Q1=10, Q2=1 ml/h)
+   dd=0.2 dc   u(0)= 0.10739 m/s   Utp=0.08910 m/s   P1=-3.047e+04   P2=-7.886e+04
+   dd=0.4 dc   u(0)=-0.01046 m/s   Utp=0.05958 m/s   P1=-8.388e+04   P2=7.549e+04
+   dd=0.6 dc   u(0)=-0.05858 m/s   Utp=0.08042 m/s   P1=-2.076e+05   P2=6.658e+04
+   dd=0.8 dc   u(0)=-0.14170 m/s   Utp=0.15398 m/s   P1=-1.130e+06   P2=7.967e+04
+
+3. Effect of Q1 (Q2=5 ml/h, dd=0.6 dc)
+   Q1= 1 ml/h   u(0)= 0.08929   Utp=0.01987   P1=1.586e+04   P2=-3.325e+04
+   Q1= 5 ml/h   u(0)= 0.05809   Utp=0.05107   P1=-7.018e+04   P2=-3.360e+03
+   Q1=10 ml/h   u(0)= 0.01909   Utp=0.09007   P1=-1.777e+05   P2=3.400e+04
+
+4. Effect of Q2 (Q1=5 ml/h, dd=0.6 dc)
+   Q2= 1 ml/h   u(0)=-0.01958   Utp=0.04142   P1=-1.001e+05   P2=2.922e+04
+   Q2= 5 ml/h   u(0)= 0.05809   Utp=0.05107   P1=-7.018e+04   P2=-3.360e+03
+   Q2=10 ml/h   u(0)= 0.15517   Utp=0.06314   P1=-3.281e+04   P2=-4.408e+04
+
+5. Force balance  Q1=4.456 ml/h, Q2=0.518 ml/h, σ=2.636 mN/m
+   d_eq   = 289.10 μm
+   d_crit = 275.92 μm
+   d_real = 311.27 μm
+   regime = slug flow
+
+6. Diameters vs Q1 (Q2=0.518 ml/h)
+   Q1= 1.00  d_eq=None  d_crit=66.1  d_real=None
+   Q1= 4.35  d_eq=289.36690662789357  d_crit=275.3  d_real=312.00646574925986
+   Q1=12.00  d_eq=270.85735558585066  d_crit=291.5  d_real=280.61531657840607
+

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Droplet formation solver — results</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+          onload="renderMathInElement(document.body, {
+            delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+          });"></script>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --card: #ffffff;
+      --ink: #1b1f24;
+      --muted: #5b6570;
+      --line: #d8dee6;
+      --accent: #1f4e79;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.55;
+    }
+    header {
+      background: var(--accent);
+      color: #fff;
+      padding: 2rem 1.5rem 1.6rem;
+    }
+    header h1 {
+      margin: 0 0 0.4rem;
+      font-size: 1.7rem;
+      font-weight: 650;
+    }
+    header p { margin: 0; opacity: 0.92; max-width: 52rem; }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1.25rem 1.4rem 1.4rem;
+      margin-bottom: 1.1rem;
+    }
+    h2 {
+      margin: 0 0 0.8rem;
+      font-size: 1.15rem;
+      color: var(--accent);
+    }
+    p.lead { color: var(--muted); margin-top: 0; }
+    .katex-display { margin: 0.9rem 0; overflow-x: auto; overflow-y: hidden; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-variant-numeric: tabular-nums;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.55rem 0.65rem;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th { color: var(--muted); font-weight: 600; font-size: 0.86rem; }
+    td.num { text-align: right; font-family: "IBM Plex Mono", ui-monospace, monospace; }
+    figure {
+      margin: 0.8rem 0 0;
+    }
+    figure img {
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+    figcaption {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 0.45rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 860px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      padding: 0.5rem 0 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Droplet formation in microfluidic channels</h1>
+    <p>Axisymmetric Stokes solver with independent phase pressure gradients, spectral verification, and equatorial force balance.</p>
+  </header>
+  <main>
+    <section>
+      <h2>Governing equation</h2>
+      <p class="lead">Creeping, steady, axisymmetric flow in a cylindrical channel. Phase 2 occupies the droplet core; phase 1 occupies the surrounding film.</p>
+      $$
+      \frac{1}{r}\frac{\mathrm{d}}{\mathrm{d}r}\left(r\frac{\mathrm{d}u_i}{\mathrm{d}r}\right)
+      =
+      \frac{1}{\mu_i}\frac{\partial p_i}{\partial x}
+      $$
+      <p>Boundary conditions: $u_1(R)=0$, $u_2'(0)=0$, $u_1(R_d)=u_2(R_d)=U_{tp}$, and $\mu_1 u_1'(R_d)=\mu_2 u_2'(R_d)$. The pressure gradients $\partial p_1/\partial x$ and $\partial p_2/\partial x$ are fixed by $Q_1$ and $Q_2$.</p>
+    </section>
+
+    <section>
+      <h2>Reference hydrodynamic case</h2>
+      <p class="lead">$Q_1=10~\mathrm{ml/h}$, $Q_2=1~\mathrm{ml/h}$, $d_d=0.6\,d_c$.</p>
+      <table>
+        <thead><tr><th>Quantity</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>$\partial p_1/\partial x$</td><td class="num">-2.0761e+05 Pa/m</td></tr>
+          <tr><td>$\partial p_2/\partial x$</td><td class="num">6.6583e+04 Pa/m</td></tr>
+          <tr><td>$U_{tp}$</td><td class="num">0.0804 m/s</td></tr>
+          <tr><td>$u_2(0)$</td><td class="num">-0.0586 m/s</td></tr>
+          <tr><td>Recovered $Q_1$ relative error</td><td class="num">-8.040e-15</td></tr>
+          <tr><td>Recovered $Q_2$ relative error</td><td class="num">-3.666e-14</td></tr>
+          <tr><td>Chebyshev $\max|u_1-u_1^{\mathrm{an}}|$</td><td class="num">3.105e-14</td></tr>
+          <tr><td>Chebyshev $\max|u_2-u_2^{\mathrm{an}}|$</td><td class="num">4.154e-14</td></tr>
+        </tbody>
+      </table>
+      <figure>
+        <img src="01_chebyshev_vs_analytical.png" alt="Chebyshev collocation versus analytical velocity profile" />
+        <figcaption>Spectral nodes lie on the closed-form profile. Opposite-sign pressure gradients reverse the droplet core.</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>Velocity fields</h2>
+      <div class="grid">
+        <figure>
+          <img src="02_droplet_growth.png" alt="Velocity profiles during droplet growth" />
+          <figcaption>Profile evolution as $d_d/d_c$ increases at fixed $Q_1=10~\mathrm{ml/h}$, $Q_2=1~\mathrm{ml/h}$.</figcaption>
+        </figure>
+      </div>
+      <div class="grid grid-2">
+        <figure>
+          <img src="03_Q1_sweep.png" alt="Effect of continuous-phase flow rate" />
+          <figcaption>Continuous-phase flow $Q_1$ controls film speed and can invert the core.</figcaption>
+        </figure>
+        <figure>
+          <img src="04_Q2_sweep.png" alt="Effect of dispersed-phase flow rate" />
+          <figcaption>Dispersed-phase flow $Q_2$ mainly changes the droplet interior.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section>
+      <h2>Force balance and droplet size</h2>
+      $$
+      F_{\mathrm{tot}} = F_{\Delta p} + F_s - F_r
+      $$
+      <p>$F_r=\pi d_d\sigma$, $F_s=\tau(R_d)A_d$, $F_{\Delta p}=(\partial p_2/\partial x)V_d$. Equilibrium is $F_{\mathrm{tot}}=0$.</p>
+      <table>
+        <thead><tr><th>Diameter</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>$d_{\mathrm{eq}}$</td><td class="num">289.1 μm</td></tr>
+          <tr><td>$d_{\mathrm{crit}}$</td><td class="num">275.9 μm</td></tr>
+          <tr><td>$d_{\mathrm{real}}$</td><td class="num">311.3 μm</td></tr>
+          <tr><td>Regime</td><td class="num">slug</td></tr>
+        </tbody>
+      </table>
+      <div class="grid grid-2">
+        <figure>
+          <img src="05_force_balance.png" alt="Forces versus droplet diameter" />
+          <figcaption>Holding tension versus detaching shear and pressure forces.</figcaption>
+        </figure>
+        <figure>
+          <img src="06_diameters_vs_Q1.png" alt="Droplet diameters versus continuous-phase flow rate" />
+          <figcaption>Slug → drip when $d_{\mathrm{eq}}$ falls below $d_{\mathrm{crit}}$.</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+  <footer>Equations rendered with KaTeX. Open this file in a browser; GitHub’s file preview is not required.</footer>
+</body>
+</html>
