@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+from dataclasses import dataclass
 from pathlib import Path
 
 import matplotlib
@@ -37,6 +38,7 @@ plt.rcParams.update(
 
 
 def _save(fig: plt.Figure, output_dir: Path, name: str) -> Path:
+    output_dir.mkdir(parents=True, exist_ok=True)
     path = output_dir / name
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
@@ -45,20 +47,35 @@ def _save(fig: plt.Figure, output_dir: Path, name: str) -> Path:
 
 
 def _write_csv(path: Path, header: list[str], rows: list[tuple]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="") as handle:
         writer = csv.writer(handle)
         writer.writerow(header)
         writer.writerows(rows)
 
 
+@dataclass(frozen=True)
+class StudyOutput:
+    """Locations of artefacts written by :func:`run_reference_study`."""
+
+    output_dir: Path
+    figures_dir: Path
+    data_dir: Path
+    html_path: Path
+    summary_path: Path
+
+
 def repository_root() -> Path:
     return Path(__file__).resolve().parents[1]
 
 
-def run_reference_study(output_dir: Path | None = None) -> Path:
+def run_reference_study(output_dir: Path | None = None) -> StudyOutput:
     """Reproduce the reference hydrodynamic cases and write artefacts."""
     output_dir = Path(output_dir) if output_dir else repository_root() / "results"
-    output_dir.mkdir(parents=True, exist_ok=True)
+    figures_dir = output_dir / "figures"
+    data_dir = output_dir / "data"
+    figures_dir.mkdir(parents=True, exist_ok=True)
+    data_dir.mkdir(parents=True, exist_ok=True)
     lines: list[str] = []
 
     def log(message: str) -> None:
@@ -111,7 +128,7 @@ def run_reference_study(output_dir: Path | None = None) -> Path:
     ax.set_title(r"Chebyshev vs analytical  ($Q_1=10$, $Q_2=1$ ml/h, $d_d=0.6 d_c$)")
     ax.legend()
     ax.grid(True, alpha=0.3)
-    _save(fig, output_dir, "01_chebyshev_vs_analytical.png")
+    _save(fig, figures_dir, "01_chebyshev_vs_analytical.png")
 
     log("2. Velocity as the droplet grows (Q1=10, Q2=1 ml/h)")
     fig, axes = plt.subplots(1, 4, figsize=(14.2, 3.5), sharey=True)
@@ -134,10 +151,10 @@ def run_reference_study(output_dir: Path | None = None) -> Path:
     axes[0].set_ylabel(r"$u_x$ (m/s)")
     axes[0].legend(fontsize=8)
     fig.suptitle(r"$Q_1=10$ ml/h, $Q_2=1$ ml/h", y=1.04)
-    _save(fig, output_dir, "02_droplet_growth.png")
+    _save(fig, figures_dir, "02_droplet_growth.png")
     log("")
     _write_csv(
-        output_dir / "droplet_growth.csv",
+        data_dir / "droplet_growth.csv",
         ["dd/dc", "u_center_m_s", "Utp_m_s", "dp1_dx_Pa_m", "dp2_dx_Pa_m"],
         growth_rows,
     )
@@ -167,10 +184,10 @@ def run_reference_study(output_dir: Path | None = None) -> Path:
     ax.set_title(r"$Q_2=5$ ml/h, $d_d=0.6 d_c$")
     ax.legend()
     ax.grid(True, alpha=0.3)
-    _save(fig, output_dir, "03_Q1_sweep.png")
+    _save(fig, figures_dir, "03_Q1_sweep.png")
     log("")
     _write_csv(
-        output_dir / "Q1_sweep.csv",
+        data_dir / "Q1_sweep.csv",
         ["Q1_mlh", "u_center_m_s", "Utp_m_s", "dp1_dx_Pa_m", "dp2_dx_Pa_m"],
         q1_rows,
     )
@@ -199,10 +216,10 @@ def run_reference_study(output_dir: Path | None = None) -> Path:
     ax.set_title(r"$Q_1=5$ ml/h, $d_d=0.6 d_c$")
     ax.legend()
     ax.grid(True, alpha=0.3)
-    _save(fig, output_dir, "04_Q2_sweep.png")
+    _save(fig, figures_dir, "04_Q2_sweep.png")
     log("")
     _write_csv(
-        output_dir / "Q2_sweep.csv",
+        data_dir / "Q2_sweep.csv",
         ["Q2_mlh", "u_center_m_s", "Utp_m_s", "dp1_dx_Pa_m", "dp2_dx_Pa_m"],
         q2_rows,
     )
@@ -235,7 +252,7 @@ def run_reference_study(output_dir: Path | None = None) -> Path:
     ax.set_title(r"Force balance vs $d_d$  ($Q_1=4.456$, $Q_2=0.518$ ml/h)")
     ax.legend()
     ax.grid(True, alpha=0.3)
-    _save(fig, output_dir, "05_force_balance.png")
+    _save(fig, figures_dir, "05_force_balance.png")
 
     deq = equilibrium_diameter(ch_sigma, Q1, Q2)
     dcrit = critical_diameter(ch_sigma.dc, Q1, Q2)
@@ -250,7 +267,7 @@ def run_reference_study(output_dir: Path | None = None) -> Path:
         log(f"   regime = {regime} flow")
     log("")
     _write_csv(
-        output_dir / "force_balance.csv",
+        data_dir / "force_balance.csv",
         ["dd_um", "Fr_uN", "Fs_uN", "Fdp_uN", "Ftot_uN"],
         force_rows,
     )
@@ -292,10 +309,10 @@ def run_reference_study(output_dir: Path | None = None) -> Path:
     ax.set_title(r"$Q_2=0.518$ ml/h, $\sigma=2.636$ mN/m")
     ax.legend()
     ax.grid(True, alpha=0.3)
-    _save(fig, output_dir, "06_diameters_vs_Q1.png")
+    _save(fig, figures_dir, "06_diameters_vs_Q1.png")
     log("")
     _write_csv(
-        output_dir / "diameters_vs_Q1.csv",
+        data_dir / "diameters_vs_Q1.csv",
         ["Q1_mlh", "deq_um", "dcrit_um", "dreal_um"],
         diam_rows,
     )
@@ -322,7 +339,10 @@ def run_reference_study(output_dir: Path | None = None) -> Path:
 
     summary_path = output_dir / "summary.txt"
     summary_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    log(f"Wrote {summary_path}")
-    log(f"Wrote {html_path}")
-    log("Done.")
-    return output_dir
+    return StudyOutput(
+        output_dir=output_dir,
+        figures_dir=figures_dir,
+        data_dir=data_dir,
+        html_path=html_path,
+        summary_path=summary_path,
+    )

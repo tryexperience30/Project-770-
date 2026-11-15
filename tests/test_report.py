@@ -29,6 +29,6 @@ def test_html_report_includes_katex_pipeline(tmp_path: Path) -> None:
     assert r"\frac{1}{r}" in html
     assert "$$" in html
     assert "U_{tp}" in html
-    assert "02_droplet_growth.png" in html
-    assert "03_Q1_sweep.png" in html
-    assert "06_diameters_vs_Q1.png" in html
+    assert "figures/02_droplet_growth.png" in html
+    assert "figures/03_Q1_sweep.png" in html
+    assert "figures/06_diameters_vs_Q1.png" in html

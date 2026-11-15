@@ -187,7 +187,7 @@ def write_html_report(
         </tbody>
       </table>
       <figure>
-        <img src="01_chebyshev_vs_analytical.png" alt="Chebyshev collocation versus analytical velocity profile" />
+        <img src="figures/01_chebyshev_vs_analytical.png" alt="Chebyshev collocation versus analytical velocity profile" />
         <figcaption>Spectral nodes lie on the closed-form profile. Opposite-sign pressure gradients reverse the droplet core.</figcaption>
       </figure>
     </section>
@@ -196,17 +196,17 @@ def write_html_report(
       <h2>Velocity fields</h2>
       <div class="grid">
         <figure>
-          <img src="02_droplet_growth.png" alt="Velocity profiles during droplet growth" />
+          <img src="figures/02_droplet_growth.png" alt="Velocity profiles during droplet growth" />
           <figcaption>Profile evolution as $d_d/d_c$ increases at fixed $Q_1=10~\\mathrm{{ml/h}}$, $Q_2=1~\\mathrm{{ml/h}}$.</figcaption>
         </figure>
       </div>
       <div class="grid grid-2">
         <figure>
-          <img src="03_Q1_sweep.png" alt="Effect of continuous-phase flow rate" />
+          <img src="figures/03_Q1_sweep.png" alt="Effect of continuous-phase flow rate" />
           <figcaption>Continuous-phase flow $Q_1$ controls film speed and can invert the core.</figcaption>
         </figure>
         <figure>
-          <img src="04_Q2_sweep.png" alt="Effect of dispersed-phase flow rate" />
+          <img src="figures/04_Q2_sweep.png" alt="Effect of dispersed-phase flow rate" />
           <figcaption>Dispersed-phase flow $Q_2$ mainly changes the droplet interior.</figcaption>
         </figure>
       </div>
@@ -229,11 +229,11 @@ def write_html_report(
       </table>
       <div class="grid grid-2">
         <figure>
-          <img src="05_force_balance.png" alt="Forces versus droplet diameter" />
+          <img src="figures/05_force_balance.png" alt="Forces versus droplet diameter" />
           <figcaption>Holding tension versus detaching shear and pressure forces.</figcaption>
         </figure>
         <figure>
-          <img src="06_diameters_vs_Q1.png" alt="Droplet diameters versus continuous-phase flow rate" />
+          <img src="figures/06_diameters_vs_Q1.png" alt="Droplet diameters versus continuous-phase flow rate" />
           <figcaption>Slug → drip when $d_{{\\mathrm{{eq}}}}$ falls below $d_{{\\mathrm{{crit}}}}$.</figcaption>
         </figure>
       </div>

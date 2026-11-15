@@ -14,7 +14,10 @@ venv/
 htmlcov/
 dist/
 build/
-# Local working copies that still carry course-coded filenames.
-# Professional copies live in docs/reference/.
-Project/Report and paper /
-Project/.ipynb_checkpoints/
+
+# Local working copies and supporting documents. They remain on disk
+# and are not part of the published solver.
+Project/
+docs/
+notebooks/
+Svetlov_Abiev_model/
